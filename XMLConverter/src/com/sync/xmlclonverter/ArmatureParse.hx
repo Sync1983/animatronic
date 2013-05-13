@@ -23,7 +23,7 @@ class ArmatureParse {
     this._frameRate = Std.parseInt(this._xmlPart.get('frameRate'));    
     trace(this._name);
     trace(this._frameRate);
-    var armatures = this._xmlPart.elementsNamed('armatures');
+    var armatures:Xml = this._xmlPart.firstElement();    
     trace(armatures);
   }
   
