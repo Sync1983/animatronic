@@ -1,0 +1,24 @@
+<TextureAtlas name="Vikasa" width="256" height="256">
+  <SubTexture name="assets/rKist" width="22" height="21" x="136" y="70"/>
+  <SubTexture name="assets/rHand" width="9" height="23" x="194" y="101"/>
+  <SubTexture name="assets/rPlecho" width="12" height="27" x="221" y="81"/>
+  <SubTexture name="assets/head" width="87" height="131" x="0" y="0"/>
+  <SubTexture name="assets/rFoot" width="16" height="10" x="235" y="107"/>
+  <SubTexture name="assets/rLeg" width="10" height="22" x="160" y="101"/>
+  <SubTexture name="assets/rNoga" width="15" height="28" x="235" y="56"/>
+  <SubTexture name="assets/body" width="44" height="52" x="194" y="0"/>
+  <SubTexture name="assets/taz" width="26" height="25" x="207" y="54"/>
+  <SubTexture name="assets/lFoot" width="25" height="8" x="205" y="110"/>
+  <SubTexture name="assets/lLeg" width="12" height="22" x="136" y="93"/>
+  <SubTexture name="assets/lNoga" width="14" height="29" x="160" y="70"/>
+  <SubTexture name="assets/lKist" width="17" height="19" x="235" y="86"/>
+  <SubTexture name="assets/st1" width="11" height="54" x="240" y="0"/>
+  <SubTexture name="assets/st2" width="4" height="36" x="188" y="70"/>
+  <SubTexture name="assets/st3" width="4" height="36" x="182" y="70"/>
+  <SubTexture name="assets/st4" width="4" height="36" x="176" y="70"/>
+  <SubTexture name="assets/stick" width="45" height="130" x="89" y="0"/>
+  <SubTexture name="assets/st5" width="11" height="45" x="194" y="54"/>
+  <SubTexture name="assets/lPlecho" width="12" height="27" x="207" y="81"/>
+  <SubTexture name="assets/lHand" width="8" height="23" x="150" y="93"/>
+  <SubTexture name="assets/hair" width="56" height="68" x="136" y="0"/>
+</TextureAtlas>

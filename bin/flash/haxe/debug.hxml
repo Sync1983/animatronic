@@ -1,0 +1,15 @@
+-main ApplicationMain 
+-lib nme
+-lib actuate
+-cp src
+-cp C:\Motion-Twin\Haxe/lib\nme/3,5,5/
+-D nme_install_tool
+-D fdb
+-D web
+--dead-code-elimination
+-swf-version 11
+-swf9 bin/flash/bin/Bones2.swf
+-swf-header 800:480:60:0
+-cp bin/flash/haxe
+--no-inline
+-debug
