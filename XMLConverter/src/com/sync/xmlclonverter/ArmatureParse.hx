@@ -12,9 +12,7 @@ class ArmatureParse {
   
   private var _xmlPart:Xml;
   private var _name:String;
-  private var _frameRate:Int;
-  private var _bones:Vector<Dynamic>;  
-  private static var fields:Array<String> = [ "x", "y", "kX", "kY", "cX", "cY", "pX", "pY", "z","name"];
+  private var _frameRate:Int;  
 
   public function new(part:Xml) {    
     this._xmlPart = part;
@@ -23,39 +21,39 @@ class ArmatureParse {
     this._frameRate = Std.parseInt(this._xmlPart.get('frameRate'));    
     trace(this._name);
     trace(this._frameRate);
-    var armatures:Xml = this._xmlPart.firstElement();    
-    trace(armatures);
+    var armatures:Iterator<Xml> = this._xmlPart.firstElement().elements(); 
+    for(armature in armatures)
+      parseArmature(armature);
   }
   
-  private function parse():Void {    
-    for (bone in this._xmlPart.elements()) {
-      if (bone.nodeName == 'b') {        
-        var boneData:Dynamic = {};
-        for (field in ArmatureParse.fields)        
-          Reflect.setField(boneData, field, bone.get(field));        
-        _bones.push(boneData);
-      }
-    }
-    trace(_bones);
-  }
-  
-  public function pack():ByteArray{
-    var res:ByteArray = new ByteArray();    
-    for (bone in _bones) {      
-      var size:Int = Std.string(bone.name).length * 2 + 72;
-      //Writing size
-      res.writeShort(size);
-      //Writing const-length fields
-      for (field in ArmatureParse.fields)
-        if (field != "name")
-          res.writeFloat(Std.parseFloat(Reflect.field(bone, field)));
-      var name:String = Reflect.field(bone, "name");
-      //Writing name UTF
-      res.writeUTFBytes(name);      
-    }
-    res.writeUTFBytes(_name);
-    res.compress();
+  function parseArmature(armature:Xml):ByteArray {
+    var res:ByteArray = new ByteArray();
+    var name:String = armature.get('name');
+    trace(name);
+    for (bone in armature.elements()) {
+      var atlas:String = bone.firstElement().get('name');
+      var X:String = bone.get('x');
+      var Y:String = bone.get('y');
+      var skewX:String = bone.get('kX');
+      var skewY:String = bone.get('kY');
+      var scaleX:String = bone.get('cX');
+      var scaleY:String = bone.get('cY');
+      var pivotX:String = bone.get('pX');
+      var pivotY:String = bone.get('pY');
+      var z:String = bone.get('z');      
+      var matrix:ByteMatrix = new ByteMatrix();
+      matrix.addSkew(skewX, skewY);
+      
+      trace(atlas);
+    }    
     return res;
   }
+  
+  
+  
+  private function parse():Void {    
     
+  }
+  
+      
 }
