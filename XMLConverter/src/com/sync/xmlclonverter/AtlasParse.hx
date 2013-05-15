@@ -11,7 +11,7 @@ class AtlasParse {
   
   private var _xml:Xml;
   private var _name:String;
-  public var alias:Vector<String>;
+  public var alias:Array<String>;
 
   public function new(xml:Xml) {
     _xml = xml.firstChild();
@@ -21,7 +21,7 @@ class AtlasParse {
   public function parse():ByteArray {
     var atlas:ByteArray = new ByteArray();
     var alias:ByteArray = new ByteArray();
-    this.alias = new Vector<String>();
+    this.alias = new Array<String>();
     var item:Int = 0;
     for (sub in _xml.elements()) {
       alias.writeUTF(sub.get('name'));

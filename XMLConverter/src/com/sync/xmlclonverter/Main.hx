@@ -1,6 +1,8 @@
 package com.sync.xmlclonverter;
 
-//import neko.io.File;
+#if neko
+import neko.io.File;
+#end
 import nme.Assets;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
@@ -39,18 +41,14 @@ class Main extends Sprite
     var atlasObj:AtlasParse = new AtlasParse(atlas);
     var data:ByteArray = atlasObj.parse();
     trace("Atlas length: "+data.length);    
-    //File.saveBytes("D:\\dev\\Bones2\\assets\\bins\\binary.bin", data);
-    var armatureObj:ArmatureParse = new ArmatureParse(scelet.firstChild());
-    /*data = data.firstChild();
-    for (arm in data.elements()) {      
-      if(arm.nodeName=='armatures') {
-      var item:ArmatureParse;      
-        for(i in arm.elements()) {
-          item = new ArmatureParse(i);          
-          var BA:ByteArray = item.pack();          
-        }
-      }
-    }*/
+    
+    var armatureObj:ArmatureParse = new ArmatureParse(scelet.firstChild(), atlasObj);    
+    data.writeInt(armatureObj.getBytes().length);
+    data.writeBytes(armatureObj.getBytes());
+    trace("Atlas+Armature length: "+data.length);
+    #if neko
+    File.saveBytes("D:\\dev\\Bones2\\assets\\bins\\binary.bin", data);
+    #end
 	}
     
   private function onLoaderComplite(event:Event):Void {
