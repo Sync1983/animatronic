@@ -36,14 +36,14 @@ class BonesArmature {
       trace("Name: " + _name + " FrameRate: " + _frameRate);
       while (_ba.position < _ba.length) {    
         
-        var X:      Float = _ba.readInt() / 100;        
-        var Y:      Float = _ba.readInt() / 100;
-        var skewX:  Float = _ba.readInt() / 100;
-        var skewY:  Float = _ba.readInt() / 100;
-        var scaleX: Float = _ba.readInt() / 100;
-        var scaleY: Float = _ba.readInt() / 100;
-        var pivotX: Float = _ba.readInt() / 100;
-        var pivotY: Float = _ba.readInt() / 100;
+        var X:      Float = _ba.readInt() / 1000;        
+        var Y:      Float = _ba.readInt() / 1000;
+        var skewX:  Float = _ba.readInt() / 1000;
+        var skewY:  Float = _ba.readInt() / 1000;
+        var scaleX: Float = _ba.readInt() / 1000;
+        var scaleY: Float = _ba.readInt() / 1000;
+        var pivotX: Float = _ba.readInt() / 1000;
+        var pivotY: Float = _ba.readInt() / 1000;
         var z:      Float = _ba.readInt();        
         var atlas:  Int   = _ba.readInt();        
         _startPosition[atlas] = [X, Y, skewX, skewY, scaleX, scaleY, pivotX, pivotY, z];
