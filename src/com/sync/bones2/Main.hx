@@ -37,9 +37,8 @@ class Main extends Sprite
     ba = Assets.getBytes('bins/binary.bin');
   
     var parser:com.sync.bones2.parser.ParseBytes = new com.sync.bones2.parser.ParseBytes(ba, img);
-    for (index in 0...parser.bonesManager.bones.length) {
-      trace(parser.bonesManager.bones[index]);
-      parser.bonesManager.bones[index].addToStage(40*index, 90, stage);
+    for (index in 0...parser.bonesManager.bones.length) {      
+      parser.bonesManager.bones[index].addToStage(0,0,stage);
     }
     
 	}

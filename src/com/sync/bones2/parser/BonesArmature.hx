@@ -20,6 +20,12 @@ class BonesArmature {
       parse();
     }
     
+    public function getBoneParams(atlasId:Int):Array<Float> {
+      if ((atlasId<0)||(atlasId>=_startPosition.length))
+        return null;
+      return _startPosition[atlasId];
+    }
+    
     function parse() {
       _ba.position = 0; 
       _frameRate = _ba.readInt();

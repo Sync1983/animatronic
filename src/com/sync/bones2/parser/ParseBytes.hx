@@ -39,7 +39,7 @@ class ParseBytes {
       this.alias = new BonesAlias(alias);
       this.atlas = new BonesAtlas(atlas);
       this.armatures = new BonesArmature(armatures);
-      this.bonesManager = new BonesManager(this.alias, this.atlas, this._bitmap);      
+      this.bonesManager = new BonesManager(this.alias, this.atlas, this._bitmap, this.armatures);      
     }
     
 }
