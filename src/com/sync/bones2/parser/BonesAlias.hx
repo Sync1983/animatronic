@@ -9,16 +9,16 @@ import nme.Vector;
 class BonesAlias
 {
     private var _ba:ByteArray;
-    private var _names:Vector<String>;
+    private var _names:Array<String>;
     
     public function new(byteArray:ByteArray) {
       _ba = byteArray;
       byteArray = null;
-      _names = new Vector<String>();
+      _names = new Array<String>();
       _parse();
     }
     
-    public function getNames():Vector<String> {
+    public function getNames():Array<String> {
       return _names;
     }
     

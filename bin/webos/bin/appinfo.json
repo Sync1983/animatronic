@@ -1,0 +1,10 @@
+{
+	"title": "Bones2",
+	"id": "com.sync.bones2.Bones2",
+	"type": "pdk",
+	"version": "1.0.0",
+	"vendor": "Sync",
+	"icon": "icon.png",
+	"main": "Bones2",
+	"requiredMemory": 40
+}

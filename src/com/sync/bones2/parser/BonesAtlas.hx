@@ -14,16 +14,16 @@ class BonesAtlas
     public static var H:Int = 3;
     
     private var _ba:ByteArray;
-    private var _coords:Vector<Dynamic>;
+    private var _coords:Array<Dynamic>;
     
     public function new(byteArray:ByteArray) {
       _ba = byteArray;
       byteArray = null;
-      _coords = new Vector<Dynamic>();
+      _coords = new Array<Dynamic>();
       _parse();
     }
     
-    public function getBoneAtlas(boneIndex:UInt):Vector<Int> {      
+    public function getBoneAtlas(boneIndex:Int):Array<Int> {      
       if (_coords.length < boneIndex)
         return null;
       return _coords[boneIndex];
@@ -33,14 +33,13 @@ class BonesAtlas
       trace(_ba.length);      
       _ba.position = 0;          
       while (_ba.position < _ba.length) {
-        var item:Vector<Int> = new Vector<Int>();
+        var item:Array<Int> = new Array<Int>();
         var index:Int = _ba.readInt();
         item[BonesAtlas.X] = _ba.readInt();
         item[BonesAtlas.Y] = _ba.readInt();
         item[BonesAtlas.W] = _ba.readInt();
-        item[BonesAtlas.H] = _ba.readInt(); 
-        item.fixed = true;
-        _coords[index] = item;        
+        item[BonesAtlas.H] = _ba.readInt();         
+        _coords[index] = item;
       }      
     }
     

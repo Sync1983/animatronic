@@ -25,8 +25,8 @@
   <assets path="assets/bins" rename="bins" />
 	
 	<!-- optimize output -->
-	<haxeflag name="--dead-code-elimination" unless="haxe3" />
-	<haxeflag name="-dce" if="haxe3" />
+	<haxeflag name="--dead-code-elimination" unless="haxe3" />	
+  <haxeflag name="-dce std" if="haxe3" />
   
 	
 </project>

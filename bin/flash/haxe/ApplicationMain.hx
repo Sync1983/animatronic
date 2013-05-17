@@ -1,17 +1,19 @@
+#if (!macro || !haxe3)
 #if nme
 
 import com.sync.bones2.Main;
+import flash.display.DisplayObject;
 import nme.Assets;
 import nme.events.Event;
 
-
 class ApplicationMain {
-	
+
 	static var mPreloader:NMEPreloader;
 
-	public static function main () {
-		
+	public static function main() {
 		var call_real = true;
+		
+		nme.Lib.setPackage("Sync", "Bones2", "com.sync.bones2.Bones2", "1.0.0");
 		
 		
 		var loaded:Int = nme.Lib.current.loaderInfo.bytesLoaded;
@@ -21,23 +23,23 @@ class ApplicationMain {
 		nme.Lib.current.stage.scaleMode = nme.display.StageScaleMode.NO_SCALE;
 		
 		if (loaded < total || true) /* Always wait for event */ {
-			
 			call_real = false;
 			mPreloader = new NMEPreloader();
 			nme.Lib.current.addChild(mPreloader);
 			mPreloader.onInit();
 			mPreloader.onUpdate(loaded,total);
-			nme.Lib.current.addEventListener (nme.events.Event.ENTER_FRAME, onEnter);
-			
+			nme.Lib.current.addEventListener(nme.events.Event.ENTER_FRAME, onEnter);
 		}
 		
 		
+      
 		#if !fdb
 		haxe.Log.trace = flashTrace;
 		#end
+      
 		
 		if (call_real)
-			begin ();
+			begin();
 	}
 
 	#if !fdb
@@ -45,16 +47,14 @@ class ApplicationMain {
 		var className = pos.className.substr(pos.className.lastIndexOf('.') + 1);
 		var message = className+"::"+pos.methodName+":"+pos.lineNumber+": " + v;
 		
-        if (flash.external.ExternalInterface.available)
+		if (flash.external.ExternalInterface.available)
 			flash.external.ExternalInterface.call("console.log", message);
 		else untyped flash.Boot.__trace(v, pos);
     }
 	#end
-	
-	private static function begin () {
-		
+
+	private static function begin() {
 		var hasMain = false;
-		
 		for (methodName in Type.getClassFields(com.sync.bones2.Main))
 		{
 			if (methodName == "main")
@@ -63,7 +63,7 @@ class ApplicationMain {
 				break;
 			}
 		}
-		
+
 		if (hasMain)
 		{
 			Reflect.callMethod (com.sync.bones2.Main, Reflect.field (com.sync.bones2.Main, "main"), []);
@@ -71,76 +71,47 @@ class ApplicationMain {
 		else
 		{
 			var instance = Type.createInstance(com.sync.bones2.Main, []);
-			if (Std.is (instance, nme.display.DisplayObject)) {
+			if (Std.is(instance, nme.display.DisplayObject)) {
 				nme.Lib.current.addChild(cast instance);
-			}	
+			}
 		}
-		
 	}
 
-	static function onEnter (_) {
-		
+	static function onEnter(_) {
 		var loaded = nme.Lib.current.loaderInfo.bytesLoaded;
 		var total = nme.Lib.current.loaderInfo.bytesTotal;
 		mPreloader.onUpdate(loaded,total);
 		
 		if (loaded >= total) {
-			
 			nme.Lib.current.removeEventListener(nme.events.Event.ENTER_FRAME, onEnter);
 			mPreloader.addEventListener (Event.COMPLETE, preloader_onComplete);
 			mPreloader.onLoaded();
-			
 		}
-		
 	}
 
-	public static function getAsset (inName:String):Dynamic {
-		
-		
-		if (inName=="assets/bins/binary.bin")
-			 
-            return Assets.getBytes ("assets/bins/binary.bin");
-         
-		
-		if (inName=="assets/img/Vikasa_output.png")
-			 
-            return Assets.getBitmapData ("assets/img/Vikasa_output.png");
-         
-		
-		if (inName=="img/Vikasa_output.png")
-			 
-            return Assets.getBitmapData ("img/Vikasa_output.png");
-         
-		
-		if (inName=="bins/binary.bin")
-			 
-            return Assets.getBytes ("bins/binary.bin");
-         
-		
-		
-		return null;
-		
-	}
-	
-	
-	private static function preloader_onComplete (event:Event):Void {
-		
+	private static function preloader_onComplete(event:Event):Void {
 		mPreloader.removeEventListener (Event.COMPLETE, preloader_onComplete);
-		
 		nme.Lib.current.removeChild(mPreloader);
 		mPreloader = null;
-		
-		begin ();
-		
+		begin();
 	}
-	
+
+   public static function getAsset(inName:String) : Dynamic
+   {
+      var types = Assets.type;
+      if (types.exists(inName))
+         switch(types.get(inName))
+         {
+ 	         case BINARY, TEXT: return Assets.getBytes(inName);
+	         case FONT: return Assets.getFont(inName);
+	         case IMAGE: return Assets.getBitmapData(inName,false);
+	         case MUSIC, SOUND: return Assets.getSound(inName);
+         }
+
+      throw "Asset does not exist: " + inName;
+      return null;
+   }
 }
-
-class NME_assets_bins_binary_bin extends nme.utils.ByteArray { }
-class NME_assets_img_vikasa_output_png extends nme.display.BitmapData { public function new () { super (0, 0); } }
-class NME_img_vikasa_output_png extends nme.display.BitmapData { public function new () { super (0, 0); } }
-class NME_bins_binary_bin extends nme.utils.ByteArray { }
-
 
 #else
 
@@ -148,7 +119,7 @@ import com.sync.bones2.Main;
 
 class ApplicationMain {
 	
-	public static function main () {
+	public static function main() {
 		
 		var hasMain = false;
 		
@@ -163,18 +134,46 @@ class ApplicationMain {
 		
 		if (hasMain)
 		{
-			Reflect.callMethod (com.sync.bones2.Main, Reflect.field (com.sync.bones2.Main, "main"), []);
+			Reflect.callMethod(com.sync.bones2.Main, Reflect.field (com.sync.bones2.Main, "main"), []);
 		}
 		else
 		{
-			var instance = Type.createInstance(com.sync.bones2.Main, []);
-			if (Std.is (instance, flash.display.DisplayObject)) {
+			var instance = Type.createInstance(DocumentClass, []);
+			if (Std.is(instance, flash.display.DisplayObject)) {
 				flash.Lib.current.addChild(cast instance);
 			}
 		}
-		
 	}
-
 }
 
+#end
+
+#if haxe3 @:build(DocumentClass.build()) #end
+class DocumentClass extends com.sync.bones2.Main { }
+
+#else
+
+import haxe.macro.Context;
+import haxe.macro.Expr;
+
+class DocumentClass {
+	
+	macro public static function build ():Array<Field> {
+		var classType = Context.getLocalClass().get();
+		var searchTypes = classType;
+		while (searchTypes.superClass != null) {
+			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
+				var fields = Context.getBuildFields();
+				var method = macro {
+					return flash.Lib.current.stage;
+				}
+				fields.push ({ name: "get_stage", access: [ APrivate ], meta: [ { name: ":getter", params: [ macro stage ], pos: Context.currentPos() } ], kind: FFun({ args: [], expr: method, params: [], ret: macro :flash.display.Stage }), pos: Context.currentPos() });
+				return fields;
+			}
+			searchTypes = searchTypes.superClass.t.get();
+		}
+		return null;
+	}
+	
+}
 #end

@@ -27,8 +27,7 @@ class BonesManager {
     private function createBones() {      
       var names:Vector<String> = _alias.getNames();
       var itemsCount:Int = names.length;
-      var result:Vector<Bone> = new Vector<Bone>(itemsCount);
-      result.fixed = true;
+      var result:Array<Bone> = new Array<Bone>();
       
       for (index in 0...itemsCount) {
         var coords:Vector<Int> = _atlas.getBoneAtlas(index);

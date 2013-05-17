@@ -1,8 +1,5 @@
 package com.sync.xmlclonverter;
 
-#if neko
-import neko.io.File;
-#end
 import nme.Assets;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
@@ -14,6 +11,7 @@ import nme.Lib;
 import nme.net.URLLoader;
 import nme.net.URLRequest;
 import nme.utils.ByteArray;
+import sys.io.File;
 
 /**
  * ...

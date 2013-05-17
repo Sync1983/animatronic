@@ -1,3 +1,6 @@
+import nme.Assets;
+
+#if (!macro || !haxe3)
 class ApplicationMain
 {
 
@@ -42,6 +45,7 @@ class ApplicationMain
 				//{
 					nme.Lib.current.stage.align = nme.display.StageAlign.TOP_LEFT;
 					nme.Lib.current.stage.scaleMode = nme.display.StageScaleMode.NO_SCALE;
+					nme.Lib.current.loaderInfo = nme.display.LoaderInfo.create (null);
 				//}
 				
 				var hasMain = false;
@@ -61,7 +65,7 @@ class ApplicationMain
 				}
 				else
 				{
-					var instance = Type.createInstance(com.sync.xmlclonverter.Main, []);
+					var instance = Type.createInstance(DocumentClass, []);
 					#if nme
 					if (Std.is (instance, nme.display.DisplayObject)) {
 						nme.Lib.current.addChild(cast instance);
@@ -73,7 +77,7 @@ class ApplicationMain
 			60, 
 			0,
 			(true ? nme.Lib.HARDWARE : 0) |
-			(false ? nme.Lib.ALLOW_SHADERS : 0) |
+			(true ? nme.Lib.ALLOW_SHADERS : 0) |
 			(false ? nme.Lib.REQUIRE_SHADERS : 0) |
 			(false ? nme.Lib.DEPTH_BUFFER : 0) |
 			(false ? nme.Lib.STENCIL_BUFFER : 0) |
@@ -89,6 +93,22 @@ class ApplicationMain
 		#end
 		
 	}
+
+   public static function getAsset(inName:String) : Dynamic
+   {
+      var types = Assets.type;
+      if (types.exists(inName))
+         switch(types.get(inName))
+         {
+ 	         case BINARY, TEXT: return Assets.getBytes(inName);
+	         case FONT: return Assets.getFont(inName);
+	         case IMAGE: return Assets.getBitmapData(inName,false);
+	         case MUSIC, SOUND: return Assets.getSound(inName);
+         }
+
+      throw "Asset does not exist: " + inName;
+      return null;
+   }
 	
 	
 	#if neko
@@ -100,55 +120,40 @@ class ApplicationMain
 	#end
 	
 	
-	public static function getAsset(inName:String):Dynamic
-	{
-		#if nme
-		
-		if (inName == "img/Vikasa_output.png")
-		{
-			
-			return nme.Assets.getBitmapData ("img/Vikasa_output.png");
-			
+}
+
+
+#if haxe3 @:build(DocumentClass.build()) #end
+class DocumentClass extends com.sync.xmlclonverter.Main {}
+
+
+#if haxe_211
+typedef Hash<T> = haxe.ds.StringMap<T>;
+#end
+
+#else
+
+import haxe.macro.Context;
+import haxe.macro.Expr;
+
+class DocumentClass {
+	
+	macro public static function build ():Array<Field> {
+		var classType = Context.getLocalClass().get();
+		var searchTypes = classType;
+		while (searchTypes.superClass != null) {
+			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
+				var fields = Context.getBuildFields();
+				var method = macro {
+					return nme.Lib.current.stage;
+				}
+				fields.push ({ name: "get_stage", access: [ APrivate, AOverride ], kind: FFun({ args: [], expr: method, params: [], ret: macro :nme.display.Stage }), pos: Context.currentPos() });
+				return fields;
+			}
+			searchTypes = searchTypes.superClass.t.get();
 		}
-		
-		if (inName == "assets/Atlas.xml")
-		{
-			
-			return nme.Assets.getText ("assets/Atlas.xml");
-			
-		}
-		
-		if (inName == "assets/binary.bin")
-		{
-			
-			return nme.Assets.getText ("assets/binary.bin");
-			
-		}
-		
-		if (inName == "assets/img/Vikasa_output.png")
-		{
-			
-			return nme.Assets.getBitmapData ("assets/img/Vikasa_output.png");
-			
-		}
-		
-		if (inName == "assets/Vikasa_output")
-		{
-			
-			return nme.Assets.getBytes ("assets/Vikasa_output");
-			
-		}
-		
-		if (inName == "assets/XNLData.xml")
-		{
-			
-			return nme.Assets.getText ("assets/XNLData.xml");
-			
-		}
-		
-		#end
 		return null;
 	}
 	
-	
 }
+#end
