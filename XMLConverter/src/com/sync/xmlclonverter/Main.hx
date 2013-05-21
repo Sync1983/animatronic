@@ -11,7 +11,9 @@ import nme.Lib;
 import nme.net.URLLoader;
 import nme.net.URLRequest;
 import nme.utils.ByteArray;
+#if neko
 import sys.io.File;
+#end
 
 /**
  * ...
@@ -40,10 +42,19 @@ class Main extends Sprite
     var data:ByteArray = atlasObj.parse();
     trace("Atlas length: "+data.length);    
     
-    var armatureObj:ArmatureParse = new ArmatureParse(scelet.firstChild(), atlasObj);    
+    for (alias in atlasObj.alias) {
+      var bone:Bone = new Bone(alias, atlas, scelet);
+    }
+    /*var armatureObj:ArmatureParse = new ArmatureParse(scelet.firstChild(), atlasObj);    
     data.writeInt(armatureObj.getBytes().length);
     data.writeBytes(armatureObj.getBytes());
-    trace("Atlas+Armature length: "+data.length);
+    trace("Atlas+Armature length: " + data.length);
+    var animationsSkelet:Iterator<Xml> = scelet.firstChild().elementsNamed('animations');
+    for (i in animationsSkelet) {
+      var animation:Xml = i.firstElement();
+      trace(animation);
+    }*/
+      
     #if neko
     File.saveBytes("D:\\dev\\Bones2\\assets\\bins\\binary.bin", data);
     #end

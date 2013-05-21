@@ -61,7 +61,7 @@
       <b name="rPlecho" x="-19.8" y="-86" kX="60" kY="60" cX="1" cY="1" pX="5.6" pY="3.5" z="19">
         <d name="assets/rPlecho" pX="0" pY="0"/>
       </b>
-      <b name="rHand" x="-40.05" y="-77.45" kX="15" kY="15" cX="1" cY="1" pX="5.1" pY="2.25" z="20">
+      <b name="rHand" x="-40.05" y="-77.45" kX="15" kY="15" cX="1" cY="1" pX="5 .1" pY="2.25" z="20">
         <d name="assets/rHand" pX="0" pY="0"/>
       </b>
       <b name="rKist" x="-46.9" y="-60.95" kX="45" kY="45" cX="1" cY="1" pX="5.95" pY="0.95" z="21">
