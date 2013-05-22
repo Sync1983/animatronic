@@ -43,7 +43,7 @@ class Main extends Sprite
     trace("Atlas length: "+data.length);    
     
     for (alias in atlasObj.alias) {
-      var bone:Bone = new Bone(alias, atlas, scelet);
+      var bone:Bone = new Bone(alias, atlasObj, scelet);
     }
     /*var armatureObj:ArmatureParse = new ArmatureParse(scelet.firstChild(), atlasObj);    
     data.writeInt(armatureObj.getBytes().length);
