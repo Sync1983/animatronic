@@ -1,4 +1,5 @@
 package com.sync.xmlclonverter;
+import nme.Vector;
 
 /** 
  * @author Sync
@@ -30,15 +31,11 @@ class Bone
       var animation:Xml = XMLFinder.findNodeNamed(_scelet,"animation");           
       
       for (node in animation.elements()) {
-        _movies.push(node.get("name"));
-        trace(_boneName);
+        _movies.push(node.get("name"));        
         var bone:Xml = XMLFinder.findNodeByName(node, _boneName);
         if(bone!=null)
           result.set(node.get("name"), bone);        
-      }
-        
-      trace(_movies);
-      trace(result);
+      }      
       return result;
     }
     
@@ -61,6 +58,43 @@ class Bone
       _startPosition = new ByteMatrix(_assetId, X, Y, skewX, skewY, scaleX, scaleY, pivotX, pivotY, z);      
     }
     
+    function constructMovieData(data:Xml) {      
+      var childrens:Iterator<Xml> = data.elements();
+      var frames:Array<ByteMatrix> = new Array<ByteMatrix>();
+      var pos:Int = 0;
+      for (frame in childrens) {
+        var X:String      = frame.get('x');
+        var Y:String      = frame.get('y');
+        var skewX:String  = frame.get('kX');
+        var skewY:String  = frame.get('kY');
+        var scaleX:String = frame.get('cX');
+        var scaleY:String = frame.get('cY');
+        var pivotX:String = frame.get('pX');
+        var pivotY:String = frame.get('pY');
+        var z:String      = frame.get('z');
+        var duration:String = frame.get('dr');        
+        frames[pos] = new ByteMatrix(_assetId, X, Y, skewX, skewY, scaleX, scaleY, pivotX, pivotY, z, duration);
+        pos += 2;        
+      }
+      var length:Int = frames.length;
+      var i:Int = 0;
+      while (i < length) {
+        var m:Int = i + 1;
+        if (i + 2 >= length)
+          break;
+        var f1:Vector<Int> = frames[i].getMatrix();
+        var f2:Vector<Int> = frames[i + 2].getMatrix();
+        var res:Vector<String> = ["0","1","2","3","4","5","6","7","8","9"];        
+        for (j in 0...7)
+          res[j] = Std.string((f1[j] - f2[j]) / (f1[9] * 100));          
+        res[8] = Std.string(f1[8]);
+        res[9] = "1";
+        frames[m] = new ByteMatrix(_assetId, res[0], res[1], res[2], res[3], res[4], res[5], res[6], res[7], res[8], "1");
+        i += 2;
+      }
+      trace(frames);
+    }
+    
     function parseBoneData():Void {
       _assetId = Lambda.indexOf(_atlas.alias, _assetName);
       //Save bone start position
@@ -70,8 +104,10 @@ class Bone
           saveStartPosition(XMLFinder.findNodeByName(node, _assetName));
         
       //Find all movies for this bone
-      findMovies();
-      
+      var movies:Map<String,Xml> = findMovies();
+      for (movieName in _movies) {
+        constructMovieData(movies[movieName]);
+      }      
     }
     
 }
